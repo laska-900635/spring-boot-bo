@@ -1,0 +1,1 @@
+ALTER TABLE master_user ADD COLUMN email VARCHAR(255)
