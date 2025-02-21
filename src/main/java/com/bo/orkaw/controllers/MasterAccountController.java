@@ -21,9 +21,15 @@ public class MasterAccountController {
   public List<MasterAccount> getAllAccounts() {
     return masterAccountService.getAllAccounts();
   }
+
   @GetMapping("detail/{id}")
   public ApiResponse<Object> getTotalBalanceUser(@PathVariable(value = "id") UUID id) {
     return masterAccountService.getTotalBalanceUser(id);
+  }
+
+  @GetMapping("detail-balance/{id}")
+  public ApiResponse<Object> getBalanceWithJdbc(@PathVariable(value = "id") UUID id) {
+    return masterAccountService.getTotalBalanceUserWithJdbc(id);
   }
 
   @PostMapping("add")
