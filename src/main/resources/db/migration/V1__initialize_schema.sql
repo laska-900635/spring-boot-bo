@@ -1,13 +1,28 @@
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+-- CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+--
+-- CREATE TABLE MASTER_USER_L (
+--     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+--     full_name VARCHAR(255) NOT NULL
+-- );
+--
+-- CREATE TABLE MASTER_ACCOUNT_L (
+--     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+--     user_id UUID NOT NULL,
+--     balance DOUBLE PRECISION NOT NULL,
+--     CONSTRAINT FK_MASTER_ACCOUNT_USER_L FOREIGN KEY (user_id) REFERENCES MASTER_USER_L(id) ON DELETE CASCADE
+-- );
 
-CREATE TABLE master_user (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    full_name VARCHAR(255) NOT NULL
+CREATE TABLE MASTER_USER_L (
+    id RAW(16) DEFAULT SYS_GUID() PRIMARY KEY,  -- Replace UUID with RAW(16) and SYS_GUID()
+    full_name VARCHAR2(255) NOT NULL            -- Change VARCHAR to VARCHAR2 (Oracle standard)
 );
 
-CREATE TABLE master_account (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    user_id UUID NOT NULL,
-    balance DOUBLE PRECISION NOT NULL,
-    CONSTRAINT fk_master_account_user FOREIGN KEY (user_id) REFERENCES master_user(id) ON DELETE CASCADE
+CREATE TABLE MASTER_ACCOUNT_L (
+    id RAW(16) DEFAULT SYS_GUID() PRIMARY KEY,
+    user_id RAW(16) NOT NULL,
+    balance NUMBER(38,10) NOT NULL,             -- Replace DOUBLE PRECISION with NUMBER(38,10)
+    CONSTRAINT FK_MASTER_ACCOUNT_USER_L
+    FOREIGN KEY (user_id)
+    REFERENCES MASTER_USER_L(id)
+    ON DELETE CASCADE
 );

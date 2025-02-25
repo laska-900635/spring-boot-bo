@@ -23,7 +23,7 @@ public class MasterAccountController {
   }
 
   @GetMapping("detail/{id}")
-  public ApiResponse<Object> getTotalBalanceUser(@PathVariable(value = "id") UUID id) {
+  public ApiResponse<Object> getTotalBalanceUser(@PathVariable(value = "id") String id) {
     return masterAccountService.getTotalBalanceUser(id);
   }
 

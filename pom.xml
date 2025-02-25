@@ -76,15 +76,24 @@
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
-			<version>11.2.0</version>
+			<version>11.3.3</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.flywaydb/flyway-database-postgresql -->
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-database-postgresql</artifactId>
-			<version>11.2.0</version>
+			<version>11.3.3</version>
 			<scope>runtime</scope>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.flywaydb/flyway-database-oracle -->
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-database-oracle</artifactId>
+			<version>11.3.3</version>
+			<scope>runtime</scope>
+		</dependency>
+
 
 	</dependencies>
 
