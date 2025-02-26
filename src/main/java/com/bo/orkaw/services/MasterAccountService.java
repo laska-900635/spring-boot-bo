@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -65,14 +66,16 @@ public class MasterAccountService {
     return new ApiResponse<>(savedAccount);
   }
 
-  public ApiResponse<Object> getTotalBalanceUserWithJdbc(UUID id) {
+  public ApiResponse<Object> getTotalBalanceUserWithJdbc(String userId) {
+    UUID id = convertHexToUUID(userId);
+    byte[] uuidBytes = uuidToBytes(id);
     Optional<MasterUser> optionalUser = masterUserService.getDetailUser(id);
     if(optionalUser.isEmpty()) {
       return new ApiResponse<>("User not found");
     }
 
-    String sql = "SELECT COALESCE(SUM(balance), 0) from master_account WHERE user_id = ?";
-    double balance = jdbcTemplate.queryForObject(sql, new Object[]{id}, Double.class);
+    String sql = "SELECT COALESCE(SUM(balance), 0) from MASTER_ACCOUNT_L WHERE user_id = ?";
+    double balance = jdbcTemplate.queryForObject(sql, new Object[]{uuidBytes}, Double.class);
 
     MasterUser user = optionalUser.get();
     TotalBalanceModel totalBalanceModel = new TotalBalanceModel();
@@ -92,5 +95,12 @@ public class MasterAccountService {
       "$1-$2-$3-$4-$5"
     );
     return UUID.fromString(formattedUuid);
+  }
+
+  private byte[] uuidToBytes(UUID uuid) {
+    ByteBuffer bb = ByteBuffer.wrap(new byte[16]);
+    bb.putLong(uuid.getMostSignificantBits());
+    bb.putLong(uuid.getLeastSignificantBits());
+    return bb.array();
   }
 }

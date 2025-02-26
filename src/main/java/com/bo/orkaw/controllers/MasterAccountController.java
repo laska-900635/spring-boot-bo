@@ -28,7 +28,7 @@ public class MasterAccountController {
   }
 
   @GetMapping("detail-balance/{id}")
-  public ApiResponse<Object> getBalanceWithJdbc(@PathVariable(value = "id") UUID id) {
+  public ApiResponse<Object> getBalanceWithJdbc(@PathVariable(value = "id") String id) {
     return masterAccountService.getTotalBalanceUserWithJdbc(id);
   }
 
