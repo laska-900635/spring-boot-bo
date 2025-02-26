@@ -1,0 +1,1 @@
+INSERT INTO master_user(full_name, email) VALUES ('Alice White', 'alicewhite@gmail.com');
