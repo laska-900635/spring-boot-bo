@@ -34,15 +34,14 @@ public class MasterAccountService {
     return masterAccountRepository.findAll();
   };
 
-  public ApiResponse<Object> getTotalBalanceUser(String id) {
-    UUID userId = convertHexToUUID(id);
-    Optional<MasterUser> optionalUser = masterUserService.getDetailUser(userId);
+  public ApiResponse<Object> getTotalBalanceUser(UUID id) {
+    Optional<MasterUser> optionalUser = masterUserService.getDetailUser(id);
     if(optionalUser.isEmpty()) {
       return new ApiResponse<>("User not found");
     }
 
     MasterUser user = optionalUser.get();
-    Double totalBalance = masterAccountRepository.getTotalBalanceByUserId(userId);
+    Double totalBalance = masterAccountRepository.getTotalBalanceByUserId(id);
     TotalBalanceModel totalBalanceModel = new TotalBalanceModel();
     totalBalanceModel.setUserId(user.getId());
     totalBalanceModel.setFullName(user.getFullName());
@@ -66,8 +65,7 @@ public class MasterAccountService {
     return new ApiResponse<>(savedAccount);
   }
 
-  public ApiResponse<Object> getTotalBalanceUserWithJdbc(String userId) {
-    UUID id = convertHexToUUID(userId);
+  public ApiResponse<Object> getTotalBalanceUserWithJdbc(UUID id) {
     byte[] uuidBytes = uuidToBytes(id);
     Optional<MasterUser> optionalUser = masterUserService.getDetailUser(id);
     if(optionalUser.isEmpty()) {
@@ -84,17 +82,6 @@ public class MasterAccountService {
     totalBalanceModel.setBalance(balance);
 
     return new ApiResponse<>(totalBalanceModel);
-  }
-
-  private UUID convertHexToUUID(String hex) {
-    if (hex.length() != 32) {
-      throw new IllegalArgumentException("Invalid UUID format: " + hex);
-    }
-    String formattedUuid = hex.replaceFirst(
-      "([0-9a-fA-F]{8})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]{12})",
-      "$1-$2-$3-$4-$5"
-    );
-    return UUID.fromString(formattedUuid);
   }
 
   private byte[] uuidToBytes(UUID uuid) {
